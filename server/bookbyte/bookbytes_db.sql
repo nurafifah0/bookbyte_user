@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2023 at 05:47 PM
+-- Generation Time: Jan 14, 2024 at 02:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -61,14 +61,58 @@ INSERT INTO `tbl_books` (`book_id`, `user_id`, `book_isbn`, `book_title`, `book_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_cart`
+--
+
+CREATE TABLE `tbl_cart` (
+  `cart_id` int(5) NOT NULL,
+  `buyer_id` varchar(5) NOT NULL,
+  `seller_id` varchar(5) NOT NULL,
+  `book_id` varchar(5) NOT NULL,
+  `cart_qty` int(5) NOT NULL,
+  `cart_status` varchar(10) NOT NULL,
+  `order_id` varchar(5) NOT NULL,
+  `cart_date` datetime(6) NOT NULL DEFAULT current_timestamp(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_cart`
+--
+
+INSERT INTO `tbl_cart` (`cart_id`, `buyer_id`, `seller_id`, `book_id`, `cart_qty`, `cart_status`, `order_id`, `cart_date`) VALUES
+(1, '7', '1', '7', 1, 'New', '', '2024-01-14 00:33:26.616250'),
+(2, '7', '1', '7', 1, 'New', '', '2024-01-14 00:46:32.986084'),
+(3, '7', '1', '10', 1, 'New', '', '2024-01-14 20:57:07.954570');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_order`
+--
+
+CREATE TABLE `tbl_order` (
+  `order_id` int(5) NOT NULL,
+  `buyer_id` varchar(5) NOT NULL,
+  `seller_id` varchar(5) NOT NULL,
+  `order_total` decimal(5,2) NOT NULL,
+  `order_date` datetime(6) NOT NULL DEFAULT current_timestamp(6),
+  `order_status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_users`
 --
 
 CREATE TABLE `tbl_users` (
-  `user_id` int(4) NOT NULL,
+  `user_id` int(5) NOT NULL,
   `user_email` varchar(50) NOT NULL,
   `user_name` varchar(100) NOT NULL,
+  `user_phone` varchar(12) NOT NULL,
   `user_password` varchar(40) NOT NULL,
+  `user_type` varchar(10) NOT NULL,
+  `user_address` varchar(800) NOT NULL,
   `user_datereg` datetime(6) NOT NULL DEFAULT current_timestamp(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -76,9 +120,10 @@ CREATE TABLE `tbl_users` (
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`user_id`, `user_email`, `user_name`, `user_password`, `user_datereg`) VALUES
-(1, 'na@gmail.com', 'nana', '8b14cb697a5c1a25281711cec11b7d39a00f9bcc', '2023-12-11 12:41:51.224432'),
-(6, 'jane@gmail.com', 'jane', '8b14cb697a5c1a25281711cec11b7d39a00f9bcc', '2023-12-11 17:00:12.192853');
+INSERT INTO `tbl_users` (`user_id`, `user_email`, `user_name`, `user_phone`, `user_password`, `user_type`, `user_address`, `user_datereg`) VALUES
+(1, 'na@gmail.com', 'nana', '', '8b14cb697a5c1a25281711cec11b7d39a00f9bcc', '', '', '2023-12-11 12:41:51.224432'),
+(6, 'jane@gmail.com', 'jane', '', '8b14cb697a5c1a25281711cec11b7d39a00f9bcc', '', '', '2023-12-11 17:00:12.192853'),
+(7, 'halim@gmail.com', 'halim', '0123456789', '8b14cb697a5c1a25281711cec11b7d39a00f9bcc', 'Buyer', 'Persiaran Perdana\nUniversiti Utara Malaysia\n06050 Kedah', '2024-01-13 02:30:08.735575');
 
 --
 -- Indexes for dumped tables
@@ -89,6 +134,18 @@ INSERT INTO `tbl_users` (`user_id`, `user_email`, `user_name`, `user_password`, 
 --
 ALTER TABLE `tbl_books`
   ADD PRIMARY KEY (`book_id`);
+
+--
+-- Indexes for table `tbl_cart`
+--
+ALTER TABLE `tbl_cart`
+  ADD PRIMARY KEY (`cart_id`);
+
+--
+-- Indexes for table `tbl_order`
+--
+ALTER TABLE `tbl_order`
+  ADD PRIMARY KEY (`order_id`);
 
 --
 -- Indexes for table `tbl_users`
@@ -108,10 +165,22 @@ ALTER TABLE `tbl_books`
   MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
+-- AUTO_INCREMENT for table `tbl_cart`
+--
+ALTER TABLE `tbl_cart`
+  MODIFY `cart_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbl_order`
+--
+ALTER TABLE `tbl_order`
+  MODIFY `order_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `user_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
