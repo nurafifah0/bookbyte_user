@@ -14,14 +14,15 @@ $seller_id = $_POST['seller_id'];
 $book_id = $_POST['book_id'];
 $cart_qty = "1";
 $cart_status = "New";
+$book_price = $_POST['book_price'];
 
-$sqlinsert = "INSERT INTO `tbl_cart`(`buyer_id`, `seller_id`, `book_id`, `cart_qty`, `cart_status`) VALUES ('$buyer_id','$seller_id','$book_id','$cart_qty','$cart_status')";
+$sqlinsert = "INSERT INTO `tbl_cart`(`buyer_id`, `seller_id`, `book_id`, `cart_qty`, `cart_status`,`book_price`) VALUES ('$buyer_id','$seller_id','$book_id','$cart_qty','$cart_status',$book_price)";
 
 if ($conn->query($sqlinsert) === TRUE) {
-	$response = array('status' => 'success', 'data' => $sqlinsert);
+	$response = array('status' => 'success', 'data' =>null); //$sqlinsert
     sendJsonResponse($response);
 }else{
-	$response = array('status' => 'failed', 'data' => $sqlinsert);
+	$response = array('status' => 'failed', 'data' => null); //$sqlinsert
 	sendJsonResponse($response);
 }
 

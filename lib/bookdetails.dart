@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-
 class BookDetails extends StatefulWidget {
   final User user;
   final Book book;
@@ -35,7 +34,6 @@ class _BookDetailsState extends State<BookDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.book.bookTitle.toString()),
-      
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -88,7 +86,7 @@ class _BookDetailsState extends State<BookDetails> {
                     onPressed: () {
                       insertCartDialog();
                     },
-                    child: Text("Add to Cart")),
+                    child: const Text("Add to Cart")),
               )
             ]),
           ),
@@ -136,12 +134,12 @@ class _BookDetailsState extends State<BookDetails> {
   }
 
   void insertCart() {
-    http.post(
-        Uri.parse("${ServerConfig.server}/bookbyte/php/insert_cart.php"),
+    http.post(Uri.parse("${ServerConfig.server}/bookbyte/php/insert_cart.php"),
         body: {
           "buyer_id": widget.user.userid.toString(),
           "seller_id": widget.book.userId.toString(),
           "book_id": widget.book.bookId.toString(),
+          "book_price": widget.book.bookPrice,
         }).then((response) {
       log(response.body);
       if (response.statusCode == 200) {

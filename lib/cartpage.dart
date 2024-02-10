@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bookbyte_user/billscreen.dart';
 import 'package:bookbyte_user/models/cart.dart';
 import 'package:bookbyte_user/models/user.dart';
 import 'package:bookbyte_user/serverconfig.dart';
@@ -32,7 +33,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("My Cart")),
+        appBar: AppBar(title: const Text("My Cart")),
         body: RefreshIndicator(
           onRefresh: _refresh,
           child: cartList.isEmpty
@@ -49,9 +50,7 @@ class _CartPageState extends State<CartPage> {
                               color: Colors.red,
                               child: Row(children: [
                                 IconButton(
-                                    onPressed: () {
-                                      deleteCart();
-                                    },
+                                    onPressed: deleteCart,
                                     icon: const Icon(Icons.delete)),
                                 IconButton(
                                     onPressed: () {},
@@ -72,7 +71,7 @@ class _CartPageState extends State<CartPage> {
                         }),
                   ),
                   Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -82,7 +81,17 @@ class _CartPageState extends State<CartPage> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           ElevatedButton(
-                              onPressed: () {}, child: const Text("Pay Now"))
+                              onPressed: () async {
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (content) => BillScreen(
+                                              user: widget.user,
+                                              totalprice: total,
+                                            )));
+                                loadUserCart();
+                              },
+                              child: const Text("Pay Now"))
                         ],
                       ))
                 ]),
@@ -105,7 +114,6 @@ class _CartPageState extends State<CartPage> {
           total = 0.0;
           data['data']['carts'].forEach((v) {
             cartList.add(Cart.fromJson(v));
-
             total = total +
                 double.parse(v['book_price'] * int.parse(v['cart_qty']));
             setState(() {});
@@ -131,6 +139,17 @@ class _CartPageState extends State<CartPage> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['status'] == "success") {
+          cartList.clear();
+          total = 0.0;
+          data['data']['carts'].forEach((v) {
+            cartList.remove(Cart.fromJson(v));
+            total = total -
+                double.parse(v['book_price'] * int.parse(v['cart_qty']));
+            setState(() {});
+          });
+          print(total);
+          setState(() {});
+
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Delete Success"),
             backgroundColor: Colors.green,

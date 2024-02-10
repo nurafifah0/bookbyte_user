@@ -4,6 +4,7 @@ import 'package:bookbyte_user/cartpage.dart';
 import 'package:bookbyte_user/models/cart.dart';
 import 'package:bookbyte_user/models/user.dart';
 import 'package:bookbyte_user/serverconfig.dart';
+import 'package:bookbyte_user/shared/mydrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/book.dart';
@@ -44,7 +45,7 @@ class _BookListPageState extends State<BookListPage> {
     }
     return Scaffold(
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.blue),
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -87,14 +88,21 @@ class _BookListPageState extends State<BookListPage> {
               height: 1.0,
             ),
           )),
+      drawer: MyDrawer(
+        page: "books",
+        userdata: widget.user,
+      ),
       body: bookList.isEmpty
           ? const Center(child: Text("No Data"))
           : Column(
               children: [
                 Container(
-                  alignment: Alignment.center,
-                  child: Text("Page $curpage/$numofresult"),
-                ),
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Text("Page $curpage/$numofresult"),
+                      ],
+                    )),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: axiscount,
